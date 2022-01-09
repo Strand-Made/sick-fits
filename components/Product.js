@@ -3,6 +3,7 @@ import ItemStyles from './styles/ItemStyles';
 import Title from './styles/Title';
 import PriceTag from './styles/PriceTag';
 import formatMoney from '../lib/formatMoney';
+import DeleteProduct from './DeleteProduct';
 
 const Product = ({ product }) => (
   <ItemStyles>
@@ -12,6 +13,23 @@ const Product = ({ product }) => (
     </Title>
     <PriceTag>{formatMoney(product.price)}</PriceTag>
     <p>{product.description}</p>
+    <ul className="buttonList">
+      <li>
+        <Link
+          href={{
+            pathname: 'update',
+            query: {
+              id: product.id,
+            },
+          }}
+        >
+          Edit
+        </Link>
+      </li>
+      <li>
+        <DeleteProduct id={product.id}>Delete</DeleteProduct>
+      </li>
+    </ul>
   </ItemStyles>
 );
 

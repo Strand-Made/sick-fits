@@ -21,6 +21,7 @@ const ItemStyles = styled.div`
   }
   .buttonList {
     display: grid;
+    list-style: none;
     width: 100%;
     border-top: 1px solid var(--lightGray);
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
