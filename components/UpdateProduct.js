@@ -67,6 +67,10 @@ const UpdateProduct = ({ id }) => {
     >
       <DisplayError error={error || mutationRes.error} />
       <fieldset disabled={mutationRes.loading} aria-busy={mutationRes.loading}>
+        <label htmlFor="image">
+          Name
+          <input id="image" name="image" type="file" onChange={handleChange} />
+        </label>
         <label htmlFor="name">
           Name
           <input
