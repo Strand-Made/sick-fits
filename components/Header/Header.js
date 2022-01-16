@@ -39,8 +39,8 @@ const Header = () => (
       <Logo>
         <Link href="/">Sick Fits</Link>
       </Logo>
+      <Nav />
     </div>
-    <Nav />
     <div className="sub-bar">
       <p>search</p>
     </div>

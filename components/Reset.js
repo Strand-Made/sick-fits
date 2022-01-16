@@ -2,52 +2,54 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import Form from './styles/Form';
 import useForm from '../lib/useForm';
-import { CURRENT_USER_QUERY } from './User';
 import DisplayError from './ErrorMessage';
 
-const SIGN_IN_MUTATION = gql`
-  mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
-    authenticateUserWithPassword(email: $email, password: $password) {
-      ... on UserAuthenticationWithPasswordSuccess {
-        item {
-          id
-          email
-          name
-        }
-      }
-      ... on UserAuthenticationWithPasswordFailure {
-        code
-        message
-      }
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $token: String!
+    $password: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
+      code
+      message
     }
   }
 `;
 
-const SignIn = () => {
+const Reset = ({ token }) => {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
     password: '',
+    token,
   });
 
-  const [signin, { data, loading }] = useMutation(SIGN_IN_MUTATION, {
+  const [reset, { data, loading, error }] = useMutation(RESET_MUTATION, {
     variables: inputs,
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signin();
+    const res = await reset().catch(console.error);
     resetForm();
   };
-  const error =
-    data?.authenticateUserWithPassword.__typename ===
-    'UserAuthenticationWithPasswordFailure'
-      ? data?.authenticateUserWithPassword
-      : undefined;
+
+  const successfulError = data?.redeemUserPasswordResetToken?.code
+    ? data?.redeemUserPasswordResetToken
+    : undefined;
+
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Sign into your account</h2>
-      <DisplayError error={error} />
+      <h1>Reset your password</h1>
+      <DisplayError error={error || successfulError} />
       <fieldset>
+        {data?.redeemUserPasswordResetToken === null && (
+          <p>Success! You can now sign in with your password</p>
+        )}
+
         <label htmlFor="email">
           Email
           <input
@@ -64,16 +66,17 @@ const SignIn = () => {
           <input
             type="password"
             name="password"
-            placeholder="password"
+            placeholder="Password"
             autoComplete="password"
             value={inputs.password}
             onChange={handleChange}
           />
         </label>
-        <button type="submit">Sign in!</button>
+
+        <button type="submit">Request reset!</button>
       </fieldset>
     </Form>
   );
 };
 
-export default SignIn;
+export default Reset;
