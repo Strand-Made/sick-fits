@@ -1,13 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 
-const DropDown = styled.div`
+const DropDown = styled.ul`
   position: absolute;
   width: 100%;
   z-index: 2;
   border: 1px solid var(--lightGray);
 `;
 
-const DropDownItem = styled.div`
+const DropDownItem = styled.li`
   border-bottom: 1px solid var(--lightGray);
   background: ${(props) => (props.highlighted ? '#f7f7f7' : 'white')};
   padding: 1rem;
