@@ -27,7 +27,7 @@ const ItemStyles = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     grid-gap: 1px;
     background: var(--lightGray);
-    & > * {
+    & < * + * {
       background: white;
       border: 0;
       font-size: 1rem;

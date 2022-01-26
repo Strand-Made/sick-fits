@@ -83,7 +83,7 @@ const CheckoutForm = () => {
     console.log(`finished with order: ${order}`);
     // 6 change page to view the order
     router.push({
-      pathname: '/order',
+      pathname: '/order/[id]',
       query: { id: order.data.checkout.id },
     });
     // 7 close the cart
